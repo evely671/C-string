@@ -16,7 +16,7 @@ int cstr_init(cstr* dst) {
     return CSTR_OK;
 }
 
-int cstr_clear(cstr* dst) {
+int cstr_reset(cstr* dst) {
     if (!dst)
         return CSTR_INVARG;
 
@@ -49,7 +49,7 @@ int cstr_dstr_p(cstr* dst) {
     return CSTR_OK;
 }
 
-int cstr_reset(cstr* dst) {
+int cstr_clear(cstr* dst) {
     if (!dst)
         return CSTR_INVARG;
 
@@ -89,7 +89,7 @@ int cstr_remove(cstr* dst, size_t pos, size_t byte_len) {
     if (!dst || pos > dst->byte_len || byte_len == 0)
         return CSTR_INVARG;
 
-    if (byte_len > dst->byte_len - pos)
+    if (byte_len > dst->byte_len - pos)		
         byte_len = dst->byte_len - pos;
 
     char* new_str = dst->str;
