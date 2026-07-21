@@ -2,7 +2,7 @@
 #include <string.h>
 
 int cstr_init(cstr* dst) {
-	if (!dst) 
+    if (!dst) 
         return CSTR_INVARG;
 
     char* new_str = malloc(1);
@@ -16,10 +16,21 @@ int cstr_init(cstr* dst) {
     return CSTR_OK;
 }
 
-int cstr_reset(cstr* dst) {
+int cstr_clear(cstr* dst) {
     if (!dst)
         return CSTR_INVARG;
 
+    dst->byte_len = 0;
+    if (dst->str) {
+        dst->str[0] = '\0';
+    }
+    return CSTR_OK;
+}
+
+int cstr_reset(cstr* dst) {
+    if (!dst)
+        return CSTR_INVARG;
+	
     free(dst->str);
 
     dst->str = NULL;
@@ -49,26 +60,13 @@ int cstr_dstr_p(cstr* dst) {
     return CSTR_OK;
 }
 
-int cstr_clear(cstr* dst) {
-    if (!dst)
-        return CSTR_INVARG;
-
-    if (dst->byte_len > 0) {
-        dst->byte_len = 0;
-
-        if (dst->str)
-            dst->str[0] = '\0';
-    }
-    return CSTR_OK;
-}
-
 int cstr_set(cstr* dst, const char* src) {
     if (!dst || !src)
         return CSTR_INVARG;
 
     size_t new_byte_len = strlen(src);
     
-    if (dst->cap < new_byte_len) {
+    if (dst->cap <= new_byte_len) {
         size_t new_cap = new_byte_len * 2 + 1;
         char* new_str = realloc(dst->str, new_cap);
 
@@ -79,8 +77,7 @@ int cstr_set(cstr* dst, const char* src) {
         dst->cap = new_cap;
     }
 
-    strcpy(dst->str, src);
-    
+    memcpy(dst->str, src, new_byte_len + 1);
     dst->byte_len = new_byte_len;
     return CSTR_OK;
 }
@@ -89,17 +86,16 @@ int cstr_remove(cstr* dst, size_t pos, size_t byte_len) {
     if (!dst || pos > dst->byte_len || byte_len == 0)
         return CSTR_INVARG;
 
-    if (byte_len > dst->byte_len - pos)		
+    if (byte_len > dst->byte_len - pos)
         byte_len = dst->byte_len - pos;
 
-    char* new_str = dst->str;
-
-    memmove(new_str + pos,
-            new_str + pos + byte_len,
-            dst->byte_len - pos - byte_len);
+    char* buf = dst->str;
+	
+    memmove(buf + pos,
+            buf + pos + byte_len,
+            dst->byte_len - pos - byte_len + 1);
 
     dst->byte_len -= byte_len;
-    new_str[dst->byte_len] = '\0';
     return CSTR_OK;
 }
 
@@ -143,14 +139,19 @@ int cstr_insert(cstr* dst, const char* src, size_t pos) {
     if (!dst || !src || pos > dst->byte_len)
         return CSTR_INVARG;
 
+    if (dst->cap == 0) {
+        int ret = cstr_init(dst);
+        if (ret != CSTR_OK) return ret;
+    }
+
     size_t src_len = strlen(src);
     size_t new_len = src_len + dst->byte_len;
     
-    if (new_len < strlen(src))
+    if (new_len < src_len)
         return CSTR_NOMEN;
 
     if (new_len + 1 > dst->cap) {
-        size_t new_cap = dst->cap ? dst->cap * 2 : 32; /* if cap is 0, set it to 32 | 如果 cap 为 0, 则设置它为32 */
+        size_t new_cap = dst->cap ? dst->cap * 2 : 32;
         
         while (new_cap < new_len + 1)
             new_cap *= 2;
@@ -166,8 +167,8 @@ int cstr_insert(cstr* dst, const char* src, size_t pos) {
 
     if (dst->byte_len > 0 && pos < dst->byte_len) {
         memmove(dst->str + pos + src_len,
-            dst->str + pos,
-            dst->byte_len - pos);
+                dst->str + pos,
+                dst->byte_len - pos);
     }
 
     memcpy(dst->str + pos, src, src_len);
