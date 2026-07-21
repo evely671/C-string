@@ -89,7 +89,7 @@ int cstr_remove(cstr* dst, size_t pos, size_t byte_len) {
     if (!dst || pos > dst->byte_len || byte_len == 0)
         return CSTR_INVARG;
 
-    if (pos + byte_len > dst->byte_len)
+    if (byte_len > dst->byte_len - pos)
         byte_len = dst->byte_len - pos;
 
     char* new_str = dst->str;
@@ -140,7 +140,7 @@ int cstr_shrink(cstr* dst) {
 }
 
 int cstr_insert(cstr* dst, const char* src, size_t pos) {
-    if (!dst || !src || !pos > dst->byte_len)
+    if (!dst || !src || pos > dst->byte_len)
         return CSTR_INVARG;
 
     size_t src_len = strlen(src);
