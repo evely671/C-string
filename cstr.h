@@ -20,12 +20,12 @@ extern "C" {
 #define CSTR_INIT  {NULL, 0, 0}
 
 	int cstr_init(cstr* dst);
-	int cstr_clear(cstr* dst);
+	int cstr_reset(cstr* dst);
 	
 	cstr* cstr_create_p(void);
 	int cstr_dstr_p(cstr* dst);
 
-	int cstr_reset(cstr* dst);
+	int cstr_clear(cstr* dst);
 	int cstr_set(cstr* dst, const char* src);
 	int cstr_remove(cstr* dst, size_t pos, size_t len);
 
