@@ -11,7 +11,7 @@ extern "C" {
 #define CSTR_NOMEN  1
 #define CSTR_INVARG 2
 
-	typedef struct scstr {
+	typedef struct cstr {
 		char* str;
 		size_t byte_len;
 		size_t cap;
