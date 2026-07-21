@@ -27,7 +27,7 @@ extern "C" {
 
 	int cstr_clear(cstr* dst);
 	int cstr_set(cstr* dst, const char* src);
-	int cstr_remove(cstr* dst, size_t pos, size_t len);
+	int cstr_remove(cstr* dst, size_t pos, size_t byte_len);
 
 	int cstr_setcap(cstr* dst, size_t cap);
 	int cstr_setcap_unsafe(cstr* dst, size_t cap);
