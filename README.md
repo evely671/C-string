@@ -9,8 +9,8 @@ A lightweight dynamic string library for C.
 | `int cstr_init(cstr* dst)` | Initialize string object. | 初始化字符串对象。 |
 | `cstr* cstr_create_p(void)` | Create & init string on heap. | 在堆上创建并初始化字符串。 |
 | `int cstr_dstr_p(cstr* dst)` | Destroy heap-allocated string. | 销毁堆分配的字符串。 |
-| `int cstr_clear(cstr* dst)` | Free buffer and reset state. | 释放内存并重置状态。 |
-| `int cstr_reset(cstr* dst)` | Clear content, keep capacity. | 清空内容，保留容量。 |
+| `int cstr_reset(cstr* dst)` | Free buffer and reset state. | 释放内存并重置状态。 |
+| `int cstr_clear(cstr* dst)` | Clear content, keep capacity. | 清空内容，保留容量。 |
 | `int cstr_set(cstr* dst, const char* src)` | Set new content. | 设置新内容。 |
 | `int cstr_append(cstr* dst, const char* src)` | Append string. | 追加字符串。 |
 | `int cstr_insert(cstr* dst, const char* src, size_t pos)` | Insert at position. | 在指定位置插入。 |
