@@ -14,7 +14,7 @@ A lightweight dynamic string library for C.
 | `int cstr_set(cstr* dst, const char* src)` | Set new content. | 设置新内容。 |
 | `int cstr_append(cstr* dst, const char* src)` | Append string. | 追加字符串。 |
 | `int cstr_insert(cstr* dst, const char* src, size_t pos)` | Insert at position. | 在指定位置插入。 |
-| `int cstr_remove(cstr* dst, size_t pos, size_t len)` | Remove substring. | 删除指定区间。 |
+| `int cstr_remove(cstr* dst, size_t pos, size_t byte_len)` | Remove substring. | 删除指定区间。 |
 | `int cstr_setcap(cstr* dst, size_t cap)` | Adjust buffer capacity. | 调整缓冲区容量。 |
 | `int cstr_setcap_unsafe(cstr* dst, size_t cap)` | Adjust capacity (no safety checks). | 调整容量（无安全检查）。 |
 | `int cstr_shrink(cstr* dst)` | Shrink buffer to fit. | 收缩内存至合适大小。 |
