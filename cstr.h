@@ -1,40 +1,51 @@
-#ifndef SCSTR_H
-#define SCSTR_H
+#ifndef CSTR_H
+#define CSTR_H
 
 #include <stdlib.h>
+#include <string.h>
+#include <limits.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define CSTR_OK     0
-#define CSTR_NOMEN  1
-#define CSTR_INVARG 2
+#define CS_OK     0
+#define CS_NOMEN  1
+#define CS_INVARG 2
 
-	typedef struct cstr {
-		char* str;
-		size_t byte_len;
-		size_t cap;
-	}cstr;
+	typedef struct cs cs;
 
 #define CSTR_INIT  {NULL, 0, 0}
 
-	int cstr_init(cstr* dst);
-	int cstr_reset(cstr* dst);
-	
-	cstr* cstr_create_p(void);
-	int cstr_dstr_p(cstr* dst);
+	int cs_init(cs* dst);
+	int cs_init_with(cs* dst, const char* src, size_t cap);
+	int cs_init_empty(cs* dst);
+	void cs_dstr(cs* dst);
 
-	int cstr_clear(cstr* dst);
-	int cstr_set(cstr* dst, const char* src);
-	int cstr_remove(cstr* dst, size_t pos, size_t byte_len);
+	int cs_setcap(cs* dst, size_t cap);
+	int cs_setcap_unsafe(cs* dst, size_t cap);
+	int cs_shrink(cs* dst);
 
-	int cstr_setcap(cstr* dst, size_t cap);
-	int cstr_setcap_unsafe(cstr* dst, size_t cap);
-	int cstr_shrink(cstr* dst);
+	size_t cs_cap(const cs* dst);
 
-	int cstr_insert(cstr* dst, const char* src, size_t pos);
-	int cstr_append(cstr* dst, const char* src);
+	int cs_set(cs* dst, const char* src);
+	int cs_clear_length(cs* dst);
+	int cs_append(cs* dst, const char* src);
+	int cs_insert(cs* dst, const char* src, size_t pos);
+	int cs_remove(cs* dst, size_t pos, size_t len);
+	int cs_reset(cs* dst);
+
+	int cs_find(cs* dst, const char* src);
+	int cs_rfind(cs* dst, const char* src);
+
+	int cs_equal_len(cs* a, cs* b);
+	int cs_cmp_str(cs* a, cs* b);
+	int cs_cmp_cstr(cs* a, const char* b);
+
+	const char* cs_data(const cs* dst);
+	size_t cs_length(const cs* dst);
+
+
 
 #ifdef __cplusplus
 }
